@@ -45,11 +45,34 @@ class ConsistentHashing:
         for student_id, (server, grade) in self.grade_map.items():
             print(f"{student_id} -> ({server}, {grade})")
 
+    def handle_server_failure(self, failed_server):
+        """ Remove a failed server and reassign its keys """
+        print(f"\n[INFO] Server {failed_server} has failed. Reassigning grades...\n")
+
+        # Remove virtual nodes of the failed server
+        self.sorted_keys = [key for key in self.sorted_keys if self.hash_ring[key] != failed_server]
+        self.hash_ring = {key: self.hash_ring[key] for key in self.sorted_keys}  # Update mapping
+
+        # Reassign affected keys
+        new_assignments = {}
+        for student_id, (server, grade) in list(self.grade_map.items()):
+            if server == failed_server:
+                new_server = self.find_server(student_id)  # Find next available server
+                new_assignments[student_id] = (new_server, grade)
+                self.grade_map[student_id] = (new_server, grade)  # Update mapping
+
+        print("\nNew Assignments after Failure:")
+        for student_id, (server, grade) in new_assignments.items():
+            print(f"{student_id} -> ({server}, {grade})")
+
 # Example Data
 servers = ["S0", "S1", "S2", "S3", "S4"]
 grades = {101: 88, 202: 92, 303: 75, 404: 81, 505: 89}
 
+# Initialize Consistent Hashing
 consistent_hash = ConsistentHashing(servers)
 consistent_hash.store_grades(grades)
 consistent_hash.display_mapping()
 
+# Simulate failure of S2
+consistent_hash.handle_server_failure("S2")
