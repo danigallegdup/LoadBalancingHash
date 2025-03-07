@@ -1,3 +1,19 @@
+"""
+dgallegosdupuis@seng468-group9:~/LoadBalancingHash$ python3 normal_hashing.py 
+
+Student ID -> (Server, Grade)
+101 -> (S1, 88)
+202 -> (S2, 92)
+303 -> (S3, 75)
+404 -> (S4, 81)
+505 -> (S0, 89)
+
+[INFO] Server S4 has failed. Reassigning grades...
+
+New Assignments after Failure:
+404 -> (S0, 81)
+"""
+
 class NormalHashing:
     def __init__(self, servers):
         self.servers = servers  # List of servers S0, S1, S2, S3, S4

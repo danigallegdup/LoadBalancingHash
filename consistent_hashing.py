@@ -1,3 +1,21 @@
+"""
+dgallegosdupuis@seng468-group9:~/LoadBalancingHash$ python3 consistent_hashing.py 
+
+Student ID -> (Server, Grade)
+101 -> (S3, 88)
+202 -> (S3, 92)
+303 -> (S0, 75)
+404 -> (S0, 81)
+505 -> (S2, 89)
+
+[INFO] Server S2 has failed. Reassigning grades...
+
+
+New Assignments after Failure:
+505 -> (S1, 89)
+"""
+
+
 import bisect
 import hashlib
 
